@@ -2,11 +2,17 @@
 
 package:
   name: x265
-  version: {{ version }}
+  version: "{{ version }}"
 
 source:
   url: https://bitbucket.org/multicoreware/x265_git/downloads/x265_{{ version }}.tar.gz
   sha256: e70a3335cacacbba0b3a20ec6fecd6783932288ebc8163ad74bcc9606477cae8
+  patches:
+    # x265 3.5 predates CMake 4, which dropped <3.5 compatibility and OLD
+    # behaviour for CMP0025/CMP0054. Still unfixed upstream as of x265 4.1.
+    - patches/0001-Fix-the-build-with-CMake-4.patch
+    # GCC >=13 no longer includes <cstdint> transitively
+    - patches/0002-json11-include-cstdint-for-uint8_t.patch
 
 build:
   number: 4
@@ -19,6 +25,7 @@ build:
 requirements:
   build:
     - {{ compiler('cxx') }}
+    - {{ stdlib('c') }}
     - cmake
     - nasm
     - make  # [not win]
