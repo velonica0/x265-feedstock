@@ -13,6 +13,8 @@ source:
     - patches/0001-Fix-the-build-with-CMake-4.patch
     # GCC >=13 no longer includes <cstdint> transitively
     - patches/0002-json11-include-cstdint-for-uint8_t.patch
+    # Duplicate asm rules let a target link a half-assembled object
+    - patches/0003-Assemble-asm-objects-once-before-linking.patch
 
 build:
   number: 4
